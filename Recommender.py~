@@ -8,7 +8,7 @@ movies = pd.read_csv('/ml-100k/u.item', sep='|', names=m_cols, usecols=range(2))
 
 ratings = pd.merge(movies, ratings)
 #Now the amazing pivot_table function on a DataFrame will construct a user / movie rating matrix. Note how NaN indicates missing data - movies that specific users didn't rate.
-userRatings = ratings.pivot_table(index=['user_id'],columns=['title'],values='rating')
+movieRatings = ratings.pivot_table(index=['user_id'],columns=['title'],values='rating')
 #Now the magic happens - pandas has a built-in corr() method that will compute a correlation score for every column pair in the matrix! This gives us a correlation score between every pair of movies (where at least one user rated both movies - otherwise NaN's will show up.) That's amazing!
 corrMatrix = userRatings.corr()
 #However, we want to avoid spurious results that happened from just a handful of users that happened to rate the same pair of movies. In order to restrict our results to movies that lots of people rated together - and also give us more popular results that are more easily recongnizable - we'll use the min_periods argument to throw out results where fewer than 100 users rated a given movie pair:
